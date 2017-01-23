@@ -40,7 +40,7 @@ public class HomePage {
     public HomePage userLogsIn() throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         driver.findElement(loginButton).click();
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         driver.findElement(emailTextField).sendKeys("runtest@zoho.com");
         driver.findElement(passwordTextField).sendKeys("Password1");
         driver.findElement(logInButton).click();
