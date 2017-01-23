@@ -4,13 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import static org.testng.Assert.assertEquals;
 
 /**
  * Created by vitalii on 1/22/17.
  */
-public class PaymentPage {
+public class PaymentPage extends Page{
 
     private static final By mainApplicantTitleDropdown = By.xpath("//div[@class='info-text']/following::div[1]//select");
     private static final By mainApplicantFirstName = By.xpath("//div[@class='info-text']/following::div[1]//input[@ng-model='passenger.name.first']");
@@ -49,14 +50,13 @@ public class PaymentPage {
         insertSecondApplicantData();
         insertChildApplicantData();
         insertPaymentData();
-        clickPayButton();
         return new PaymentPage(driver);
     }
 
     public PaymentPage userPaysForTickets() throws InterruptedException {
         insertPaymentData();
         clickPayButton();
-        Thread.sleep(6000);
+        Thread.sleep(2000);
         return new PaymentPage(driver);
     }
 
@@ -97,21 +97,15 @@ public class PaymentPage {
     }
 
     private void clickPayButton () throws InterruptedException {
-        Thread.sleep(3000);
         driver.findElement(payButton).click();
-        Thread.sleep(3000);
     }
 
     public PaymentPage userVerifiesPaymentErrorMessage () throws InterruptedException {
-        clickPayButton();
-        Thread.sleep(6000);
         WebElement element = driver.findElement(paymentErrorPromtMessage);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
         Thread.sleep(500);
-
         String actual = driver.findElement(paymentErrorPromtMessage).getText();
         assertEquals(actual, expectedErrorMessage);
         return new PaymentPage(driver);
-
     }
 }

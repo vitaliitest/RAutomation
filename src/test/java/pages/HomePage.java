@@ -3,17 +3,13 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by vitalii on 1/21/17.
  */
-public class HomePage {
+public class HomePage extends Page{
 
     private static final By loginButton = By.id("myryanair-auth-login");
     private static final By emailTextField = By.name("emailAddress");
@@ -34,13 +30,15 @@ public class HomePage {
     private WebDriver driver;
 
     public HomePage(WebDriver driver) {
+
         this.driver = driver;
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
     }
 
     public HomePage userLogsIn() throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         driver.findElement(loginButton).click();
-        Thread.sleep(3000);
+        Thread.sleep(2000);
         driver.findElement(emailTextField).sendKeys("runtest@zoho.com");
         driver.findElement(passwordTextField).sendKeys("Password1");
         driver.findElement(logInButton).click();
@@ -50,6 +48,7 @@ public class HomePage {
     public BookingPage userInsertFlightDetails() throws InterruptedException{
         JavascriptExecutor jse = (JavascriptExecutor)driver;
         jse.executeScript("window.scrollBy(0,250)", "");
+        Thread.sleep(1000);
         driver.findElement(oneWayRadiobutton).click();
         selectDepartureAirport("Ireland");
         selectDestinationAirport("Germany");
@@ -61,16 +60,20 @@ public class HomePage {
     }
 
     public void selectDepartureAirport (String country) throws InterruptedException {
+        Thread.sleep(1000);
         driver.findElement(departureAirportTextField).clear();
+        Thread.sleep(1000);
         driver.findElement(departureAirportTextField).sendKeys(country);
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         driver.findElement(dublinAirportButton).click();
     }
 
     public void selectDestinationAirport (String country) throws InterruptedException {
+        Thread.sleep(1000);
         driver.findElement(destinationAirportTextField).clear();
+        Thread.sleep(1000);
         driver.findElement(destinationAirportTextField).sendKeys(country);
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         driver.findElement(berlinSfxAirportButton).click();
     }
 
@@ -89,20 +92,5 @@ public class HomePage {
         driver.findElement(passengerNumbeDropdown).click();
         driver.findElement(addAdultButton).click();
         driver.findElement(addChildButton).click();
-    }
-
-    public void waitForElementIsClickable (WebElement locator) {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.elementToBeClickable(locator));
-    }
-
-    public void waitForElementIsVisible (WebElement locator) {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOf(locator) );
-    }
-
-    public void waitForElementIsNotVisible (WebElement locator) {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.invisibilityOfElementLocated((By) locator) );
     }
 }
